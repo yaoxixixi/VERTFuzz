@@ -2531,8 +2531,8 @@ havoc_stage:
         case MUT_ARITH32BE: {
 
           /* Randomly add to dword, big endian. */
-
-          if (unlikely(temp_len < 5)) { break; }  // no retry
+          //ACTF("%d",temp_len);
+          if (unlikely(one1_count < 5)) { break; }  // no retry
 
           u32 pos = ones1[rand_below(afl, one1_count-5)];
           u32 num = 1 + rand_below(afl, ARITH_MAX);
