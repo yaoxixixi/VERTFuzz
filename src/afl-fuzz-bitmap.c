@@ -576,11 +576,22 @@ u8 __attribute__((hot)) save_if_interesting(afl_state_t *afl, void *mem,
     s32 fd2;
     fd2 = permissive_create(afl, queue_fn2);
     free(queue_fn2);
-    if (likely(fd >= 0)) {
-      ck_write(fd, afl->queue_cur->fs1, afl->queue_cur->len1*sizeof(int), queue_fn);
-      close(fd);
+    queue_fn2=NULL;
+    if(afl->queue_cur->len1>50){
+      if (likely(fd2 >= 0)) {
+        ck_write(fd2, afl->queue_cur->fs1, afl->queue_cur->len1*sizeof(int), queue_fn);
+        close(fd2);
+      }
+    }else{
+      if (likely(fd2 >= 0)) {
+        for(u32 i =0; i<len;i++){
+          afl->queue_cur->fs1[i]=i;
+        }
+        afl->queue_cur->len1=len;
+        ck_write(fd2, afl->queue_cur->fs1, afl->queue_cur->len1*sizeof(int), queue_fn);
+        close(fd2);
+      }
     }
-
 
 
 //change
